@@ -56,6 +56,8 @@ PR 은 파트장이 봅니다. **머지는 하지 않아도 됩니다.**
 
 테스트 코드를 한 줄도 안 썼어도 초록입니다. 빨개지는 건 실제로 뭔가 깨졌을 때입니다.
 
+Actions 탭에서 직접 눌러야 도는 것도 있습니다 — `Build Cache Warm`(학기 시작에 한 번 눌러 두면 이후 PR 이 빨라집니다), `Instrumented Test`(에뮬레이터에서 androidTest), `Release Build Check`(릴리스 빌드).
+
 실패한 검사의 자세한 리포트는 PR 의 `Checks` 탭 → 해당 워크플로 → 아래쪽 `Artifacts` 에서 받을 수 있습니다.
 
 ## 코드 스타일 규칙에 대해
