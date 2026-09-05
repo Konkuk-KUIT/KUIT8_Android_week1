@@ -43,7 +43,7 @@ fun Greeting(
 
 @Preview(showBackground = true)
 @Composable
-private fun GreetingPreview() {
+fun GreetingPreview() {
     MyApplicationTheme {
         Greeting("Android")
     }
