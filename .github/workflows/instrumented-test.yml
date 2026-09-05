@@ -1,0 +1,52 @@
+name: Instrumented Test
+
+# 에뮬레이터를 띄워 androidTest 를 돌려 본다. 자동으로 돌지 않는다.
+# Actions 탭에서 직접 눌렀을 때만 돈다(에뮬레이터는 느리고 러너 시간을 많이 먹는다).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  connected:
+    name: 에뮬레이터에서 androidTest
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          validate-wrappers: true
+
+      # 하드웨어 가속이 없으면 에뮬레이터가 사실상 안 뜬다.
+      - name: KVM 권한 열기
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: ./gradlew connectedDebugAndroidTest
+
+      - name: 실패했을 때 리포트 올리기
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-test-report
+          path: app/build/reports/androidTests
+          retention-days: 7
+          if-no-files-found: ignore

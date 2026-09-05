@@ -1,0 +1,51 @@
+name: PR Build & Test
+
+# PR 을 올리거나 커밋을 더 밀 때마다 돈다. 빌드가 깨졌는지, 테스트가 깨졌는지만 본다.
+# 테스트 코드를 한 줄도 안 썼어도 초록이다. 빨개지는 경우는 실제로 컴파일이 안 되는 때다.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# 같은 브랜치에 커밋을 연달아 밀면 앞의 실행은 취소한다.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: build & unit test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # gradle/gradle-daemon-jvm.properties 가 toolchainVersion=25 라 CI 도 25 로 맞춘다.
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          validate-wrappers: true
+
+      # --continue : 앞 태스크가 깨져도 뒤 태스크까지 돌려서 문제를 한 번에 다 보여 준다.
+      # assembleDebug 를 같이 돌리는 이유 : 단위 테스트만 돌리면 리소스·매니페스트 병합 실패를 놓친다.
+      - name: build & test
+        run: ./gradlew testDebugUnitTest assembleDebug :app:compileDebugAndroidTestKotlin --continue --build-cache
+
+      - name: 실패했을 때 테스트 리포트 올리기
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: unit-test-report
+          path: |
+            app/build/reports/tests/testDebugUnitTest
+            app/build/test-results/testDebugUnitTest
+          retention-days: 7
+          if-no-files-found: ignore

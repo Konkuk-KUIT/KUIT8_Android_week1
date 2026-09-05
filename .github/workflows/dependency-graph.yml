@@ -1,0 +1,33 @@
+name: Dependency Graph
+
+# main 의 의존성 목록을 깃허브에 올린다. 그래야 Dependabot 취약점 알림이
+# 이 프로젝트가 실제로 쓰는 라이브러리 기준으로 뜬다.
+# Settings > Code security 에서 Dependency graph 와 Dependabot alerts 를 켠 뒤에 값을 한다.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  submit:
+    name: 의존성 목록 올리기
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/dependency-submission@v6
+        with:
+          dependency-graph: generate-and-submit
+          cache-read-only: true
+          validate-wrappers: true
