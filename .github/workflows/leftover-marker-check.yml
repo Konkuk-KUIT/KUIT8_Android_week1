@@ -1,0 +1,30 @@
+name: Leftover Marker Check
+
+# 머지 충돌 마커(<<<<<<< ======= >>>>>>>)가 커밋에 그대로 들어왔는지 훑는다.
+# 경고만 남기고 PR 을 막지 않는다. 마크다운 제목 밑줄(=======)에 오탐이 날 수 있어서다.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: 충돌 마커 훑기
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: 충돌 마커 찾기
+        run: |
+          if git grep -nI -E '^(<<<<<<<|=======|>>>>>>>)( |$)' -- ':!.github/workflows/*' > markers.txt; then
+            while IFS= read -r line; do
+              echo "::warning::충돌 마커로 보이는 줄: $line"
+            done < markers.txt
+            echo "총 $(wc -l < markers.txt) 줄. 마크다운 제목 밑줄이면 무시해도 된다."
+          else
+            echo "충돌 마커 없음"
+          fi

@@ -1,0 +1,38 @@
+name: Release Build Check
+
+# 릴리스 변형이 빌드되는지 확인한다. 자동으로 돌지 않는다.
+# 난독화(minify)를 켜는 주차가 오면 R8 오류를 여기서 먼저 보게 된다.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: assembleRelease
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          validate-wrappers: true
+
+      # 서명 키가 없으므로 결과물은 unsigned APK 다. 빌드가 되는지만 본다.
+      - run: ./gradlew assembleRelease
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-apk
+          path: app/build/outputs/apk/release
+          retention-days: 7
+          if-no-files-found: ignore

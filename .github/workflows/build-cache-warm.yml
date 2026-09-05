@@ -1,0 +1,40 @@
+name: Build Cache Warm
+
+# PR 게이트가 돌리는 것과 같은 태스크를 main 에서 미리 한 번 돌려 Gradle 캐시를 채운다.
+# 이 저장소는 머지를 하지 않으니 main 이 거의 안 움직인다. 학기 시작에 Actions 탭에서 한 번 눌러 두면
+# 이후 PR 결과가 훨씬 빨리 나온다.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gradle/**'
+      - '**/*.gradle.kts'
+      - 'gradle.properties'
+      - '.editorconfig'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  warm:
+    name: 캐시 채우기
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      # 여기만 캐시에 쓴다. PR 잡은 읽기 전용(기본값)이다.
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: false
+          validate-wrappers: true
+
+      - run: ./gradlew ktlintCheck lintDebug testDebugUnitTest assembleDebug :app:compileDebugAndroidTestKotlin --continue --build-cache
