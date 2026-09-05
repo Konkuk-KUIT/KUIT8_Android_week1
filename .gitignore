@@ -1,15 +1,40 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# Gradle
+.gradle/
+build/
+
+# Kotlin
+.kotlin/
+
+# 로컬 환경 (사람마다 다름)
 local.properties
+*.iml
+.cxx/
+.externalNativeBuild/
+captures/
+
+# IDE 설정 (사람마다 다름)
+.idea/
+
+# 빌드 산출물
+*.apk
+*.aab
+*.ap_
+*.dex
+*.hprof
+
+# 서명 키 (절대 커밋 금지)
+*.jks
+*.keystore
+keystore.properties
+
+# 큰 jar 실수로 커밋 방지 (래퍼만 예외)
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# 비밀 설정
+google-services.json
+secrets.properties
+
+# OS
+.DS_Store
+Thumbs.db
