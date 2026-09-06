@@ -37,7 +37,9 @@ private fun ColumnSample() {
 @Composable
 private fun RowColumnSample() {
     Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(40.dp).background(Color(0xFF4A959C)))
+        Box(Modifier
+            .size(40.dp)
+            .background(Color(0xFF4A959C)))
         Spacer(Modifier.width(12.dp))
         Column {
             Text("이름")
@@ -50,7 +52,9 @@ private fun RowColumnSample() {
 @Composable
 private fun BoxSample() {
     Box(modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
-        Box(Modifier.size(120.dp, 70.dp).background(Color(0xFF4A959C)))
+        Box(Modifier
+            .size(120.dp, 70.dp)
+            .background(Color(0xFF4A959C)))
         Text("이미지 위의 글자", color = Color.White)
     }
 }
@@ -60,13 +64,17 @@ private fun BoxSample() {
 @Preview(name = "A padding 먼저", showBackground = true, widthDp = 420, heightDp = 180)
 @Composable
 private fun PaddingThenBackground() {
-    Text("A", modifier = Modifier.padding(16.dp).background(Color(0xFFFFE082)))
+    Text("A", modifier = Modifier
+        .padding(16.dp)
+        .background(Color(0xFFFFE082)))
 }
 
 @Preview(name = "B background 먼저", showBackground = true, widthDp = 420, heightDp = 180)
 @Composable
 private fun BackgroundThenPadding() {
-    Text("B", modifier = Modifier.background(Color(0xFFFFE082)).padding(16.dp))
+    Text("B", modifier = Modifier
+        .background(Color(0xFFFFE082))
+        .padding(16.dp))
 }
 
 // ── 비율 코딩 : 같은 화면을 두 기기 폭으로 ──────────────────────────
@@ -76,18 +84,32 @@ private fun BackgroundThenPadding() {
 @Composable
 private fun FixedCard() {
     Row(modifier = Modifier.width(380.dp)) {
-        Box(Modifier.width(180.dp).height(80.dp).background(Color(0xFFE57373)))
+        Box(Modifier
+            .width(180.dp)
+            .height(80.dp)
+            .background(Color(0xFFE57373)))
         Spacer(Modifier.width(20.dp))
-        Box(Modifier.width(180.dp).height(80.dp).background(Color(0xFFE57373)))
+        Box(Modifier
+            .width(180.dp)
+            .height(80.dp)
+            .background(Color(0xFFE57373)))
     }
 }
 
 @Composable
 private fun RatioCard() {
-    Row(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
-        Box(Modifier.weight(1f).height(80.dp).background(Color(0xFF81C784)))
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)) {
+        Box(Modifier
+            .weight(1f)
+            .height(80.dp)
+            .background(Color(0xFF81C784)))
         Spacer(Modifier.width(20.dp))
-        Box(Modifier.weight(1f).height(80.dp).background(Color(0xFF81C784)))
+        Box(Modifier
+            .weight(1f)
+            .height(80.dp)
+            .background(Color(0xFF81C784)))
     }
 }
 
