@@ -15,6 +15,14 @@ Android Studio 에서 `Open` 으로 이 폴더를 엽니다. 첫 실행은 Gradl
 
 `main` 브랜치에는 직접 푸시할 수 없습니다. 본인 브랜치에서 작업하고 PR 을 올려 주세요.
 
+## 강의 예제 다시 보기
+
+`app/src/main/java/com/example/myapplication/Demo.kt` 에 강의에서 보여 준 예제가 그대로 들어 있습니다.
+파일을 열고 오른쪽 위 `Split` 을 누르면 레이아웃 3종(Column / Row 안의 Column / Box), Modifier 순서,
+비율 코딩 예제가 프리뷰로 나옵니다. 숫자를 바꿔 보고 그림이 어떻게 달라지는지 보면 됩니다.
+
+미션 코드는 이 파일이 아니라 새 파일에 쓰세요. Demo.kt 는 그대로 두어도 됩니다.
+
 ## 제출
 
 ```bash
