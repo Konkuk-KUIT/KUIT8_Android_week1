@@ -13,4 +13,4 @@
 ---
 
 - [ ] 앱 실행 화면을 확인했습니다.
-- [ ] base는 `main`, compare는 `본인GitHub아이디/week1`로 선택했습니다.
+- [ ] 본인 Fork 에서 올렸고, base는 `Konkuk-KUIT/KUIT8_Android_week1` 의 `main`, compare는 본인 Fork 의 `본인GitHub아이디/week1`로 선택했습니다.
