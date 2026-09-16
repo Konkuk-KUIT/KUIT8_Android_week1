@@ -231,7 +231,6 @@ fun BottomButtons(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Preview
 @Composable
 private fun StudentIdScreenPreview() {
