@@ -99,9 +99,7 @@ fun MyTags(modifier: Modifier = Modifier) {
 @Composable
 fun Worm(modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier
-//            .width(IntrinsicSize.Max)
-//            .width(IntrinsicSize.Min)
+        modifier = modifier
             .background(Color.Cyan)
     ) {
         Column(
@@ -122,6 +120,27 @@ fun Worm(modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+// width 를 안 주면 Row 는 부모가 허용하는 만큼 넓어진다
+@Preview(showBackground = true, name = "Worm - width 없음")
+@Composable
+private fun WormPreview() {
+    Worm()
+}
+
+// IntrinsicSize.Max: 자식 중 가장 넓은 것(긴 문장)에 맞춘다
+@Preview(showBackground = true, name = "Worm - IntrinsicSize.Max")
+@Composable
+private fun WormIntrinsicMaxPreview() {
+    Worm(modifier = Modifier.width(IntrinsicSize.Max))
+}
+
+// IntrinsicSize.Min: 자식이 줄바꿈 없이 버틸 수 있는 최소 폭(가장 긴 단어)에 맞춘다
+@Preview(showBackground = true, name = "Worm - IntrinsicSize.Min")
+@Composable
+private fun WormIntrinsicMinPreview() {
+    Worm(modifier = Modifier.width(IntrinsicSize.Min))
 }
 
 @Composable
@@ -171,8 +190,3 @@ private fun MyProfileScreenPreview() {
     MyProfileScreen()
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun WormPreview() {
-    Worm()
-}
